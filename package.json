@@ -1,0 +1,15 @@
+{
+  "type": "module",
+  "module": "BetterDataView.js",
+  "main": "BetterDataView",
+  "name": "better-data-view",
+  "version": "1.0.0",
+  "author": "Joakim L. Christiansen / JLC / JoakimCh",
+  "license": "GPL-3.0",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/JoakimCh/BetterDataView.js.git"
+  },
+  "description": "",
+  "keywords": [""]
+}

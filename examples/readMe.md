@@ -34,4 +34,4 @@ deno run example_1.js
 ```
 
 ## Conclusion
-Using ES modules are awesome since the same script works everywhere without needing any tools to proccess it.
+Using ES modules together with standard JavaScript is awesome since the same script works everywhere without needing any tools to proccess it.

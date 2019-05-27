@@ -11,6 +11,7 @@ This is a standard ECMAScript module containing a class named BetterDataView whi
 * Seek and rseek functions for changing offset.
 * Allows the endianness to be defined just once.
 * Extended with smaller aliases like u8() to read and u8(value) to write.
+* dataUntilPos() returns a new DataView of the data until the current position.
 
 ## Example code
 ```javascript

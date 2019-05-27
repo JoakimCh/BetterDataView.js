@@ -12,5 +12,5 @@
   },
   "description": "An extension of the standard DataView class. Its purpose is to be more comfortable to use as well as supporting much more advanced features for interacting with ArrayBuffers.",
   "keywords": [""],
-  "files": ["./source"]
+  "files": ["./source/*"]
 }

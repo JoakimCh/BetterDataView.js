@@ -1,6 +1,6 @@
 
-import {BetterDataView} from '../BetterDataView.js'
-import {jpp} from '../misc.js'
+import {BetterDataView} from '../source/BetterDataView.js'
+import {jpp} from '../source/misc.js'
 
 async function sha256(buffer) {
   const hashBuffer = await crypto.subtle.digest('SHA-256', buffer)

@@ -1,7 +1,7 @@
 {
   "type": "module",
-  "module": "BetterDataView.js",
-  "main": "BetterDataView",
+  "module": "./source/BetterDataView.js",
+  "main": "./source/BetterDataView.js",
   "name": "better-data-view",
   "version": "1.0.0",
   "author": "Joakim L. Christiansen / JLC / JoakimCh",

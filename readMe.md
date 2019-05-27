@@ -13,10 +13,15 @@ This is a standard ECMAScript module containing a class named BetterDataView whi
 * Extended with smaller aliases like u8() to read and u8(value) to write.
 * dataUntilPos() returns a new DataView of the data until the current position.
 
+## Install (from github) using NPM
+```bash
+npm install JoakimCh/BetterDataView.js#master
+```
+
 ## Example code
 ```javascript
-import {BetterDataView} from '../BetterDataView.js'
-import {jpp} from '../misc.js'
+import {BetterDataView} from 'better-data-view'
+const jpp = function(obj) {console.log(JSON.stringify(obj,null,2))}
 
 let objTemplate = {
   value1: 'u8',  // unsigned 8-bit integer
@@ -66,10 +71,11 @@ let obj = {
 }
 
 let buffer = new ArrayBuffer(1024)
-let b = new BetterDataView(buffer)
-b.writeObject(objTemplate, obj)
-b.start() // seek back to start
-jpp(b.readObject(objTemplate))
+let dataView = new BetterDataView(buffer)
+
+dataView.writeObject(objTemplate, obj)
+dataView.seek(0)
+jpp(dataView.readObject(objTemplate))
 
 ```
 

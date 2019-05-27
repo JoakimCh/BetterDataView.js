@@ -10,6 +10,7 @@
     "type": "git",
     "url": "https://github.com/JoakimCh/BetterDataView.js.git"
   },
-  "description": "",
-  "keywords": [""]
+  "description": "An extension of the standard DataView class. Its purpose is to be more comfortable to use as well as supporting much more advanced features for interacting with ArrayBuffers.",
+  "keywords": [""],
+  "files": ["./source"]
 }

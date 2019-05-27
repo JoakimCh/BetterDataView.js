@@ -1,18 +1,4 @@
 
-/*
-This class allows the offset to grow instead of having to be set every time,
-and adds seek and rseek functions for changing it.
-It also allows the endianness to be defined just once.
-It's also extended with smaller aliases like:
-u8() to read and u8(value) to write
-
-ToDo:
-Buffered version of write/read object
-  Will create the code for a function which has the needed commands to do it
-  This is put in a map with the key being the template object
-  Also buffer object size with function for returning it
-
-*/
 import {jpp,assert} from "./misc.js"
 
 function assert_date(date) {

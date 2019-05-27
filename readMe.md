@@ -3,16 +3,16 @@
 
 This is a standard ECMAScript module containing a class named BetterDataView which is an extension of the standard DataView class. Its purpose is to be more comfortable to use as well as supporting much more advanced features for interacting with ArrayBuffers.
 
-One big feature is the ability to read/write JavaScript objects into ArrayBuffers.
+## Features
 
-## WARNING (please read)
-### This is a one-man project put here mostly to serve myself, not the public. Hence there might be bugs, missing or incomplete features. And I might not care about "industry standards", your meanings or doing things in any other way than MY way.
+* The ability to read/write JavaScript objects into ArrayBuffers (using our object template syntax).
+* Reading and writing of strings, arrays and date.
+* Allowing the offset to grow instead of having to be set every time.
+* Seek and rseek functions for changing offset.
+* Allows the endianness to be defined just once.
+* Extended with smaller aliases like u8() to read and u8(value) to write.
 
-### But I do believe that this project can be useful to others, so rest assured that I will not remove it. Feel free to use it and spread the word about it, but never expect anything from me!
-
-If you want to contribute to the project you're probably better off forking it, I don't have much time or energy to manage an open source project. If you fixed a bug I will probably accept the pull request though.
-
-## Example
+## Example code
 ```javascript
 import {BetterDataView} from '../BetterDataView.js'
 import {jpp} from '../misc.js'
@@ -72,18 +72,12 @@ jpp(b.readObject(objTemplate))
 
 ```
 
-## *To use it with Node.js
-To be written...
-
-## To use it in supported browsers
-`import {BetterDataView} from './BetterDataView/BetterDataView.js'`
-
 ## How to use
-To be written...
+Check the readme in the example directory!
 
 ## Object to/from ArrayBuffer
 ### Motivation
-Previously one would use technologies like JSON or MessagePack to send Javascript
+Previously one would use technologies like JSON or MessagePack to send JavaScript
 objects "over the wire" (for example using WebSockets). But this has a rather large
 overhead (in byte size) compared to the method used by BetterDataView.
 
@@ -96,7 +90,7 @@ To read or write an object to/from an ArrayBuffer BetterDataView needs to know e
 how this object will be stored in its binary form. This is made possible using what I 
 chose to call "object templates".
 
-An object template is a Javascript object defining how objects using this template is
+An object template is a JavaScript object defining how objects using this template is
 stored. Hence both the server and the client needs to use the same template when 
 sending objects between them.
 
@@ -104,6 +98,13 @@ In other words; the data-structure is NOT stored together with the data (like it
 be if using JSON or MessagePack). But you could optionally send the template across 
 the wire though.
 
-If object templates are implemented in other programming languages which doesn't 
-support objects like the ones in Javascript; one could choose to implement them using
-the JSON format since an object template is convertable to/from JSON.
+_Note: If object templates are implemented in other programming languages which doesn't 
+support objects like the ones in JavaScript; one could choose to implement them using
+the JSON format since an object template is convertable to/from JSON._
+
+## WARNING (please read)
+### This is a one-man project put here mostly to serve myself, not the public. Hence there might be bugs, missing or incomplete features. And I might not care about "industry standards", your meanings or doing things in any other way than MY way.
+
+### But I do believe that this project can be useful to others, so rest assured that I will not remove it. Feel free to use it and spread the word about it, but never expect anything from me!
+
+If you want to contribute to the project you might be better off by forking it, I don't have much time or energy to manage an open source project. If you fixed a bug I will probably accept the pull request though.

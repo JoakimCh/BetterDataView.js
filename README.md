@@ -1,5 +1,4 @@
-
-# BetterDataView.js
+# better-data-view
 
 This is a standard ECMAScript module containing a class named BetterDataView which is an extension of the standard DataView class. Its purpose is to be more comfortable to use as well as supporting much more advanced features for interacting with ArrayBuffers.
 
@@ -15,7 +14,7 @@ This is a standard ECMAScript module containing a class named BetterDataView whi
 
 ## Install (from github) using NPM
 ```bash
-npm install JoakimCh/BetterDataView.js#master
+npm install joakimch/better-data-view
 ```
 
 ## Example code
@@ -83,6 +82,7 @@ jpp(dataView.readObject(objTemplate))
 Check the readme in the example directory!
 
 ## Object to/from ArrayBuffer
+
 ### Motivation
 Previously one would use technologies like JSON or MessagePack to send JavaScript
 objects "over the wire" (for example using WebSockets). But this has a rather large
@@ -110,6 +110,7 @@ support objects like the ones in JavaScript; one could choose to implement them 
 the JSON format since an object template is convertable to/from JSON._
 
 ## WARNING (please read)
+
 ### This is a one-man project put here mostly to serve myself, not the public. Hence there might be bugs, missing or incomplete features. And I might not care about "industry standards", your meanings or doing things in any other way than MY way.
 
 ### But I do believe that this project can be useful to others, so rest assured that I will not remove it. Feel free to use it and spread the word about it, but never expect anything from me!

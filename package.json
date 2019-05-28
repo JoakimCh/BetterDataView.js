@@ -1,16 +1,16 @@
 {
   "type": "module",
-  "module": "./source/BetterDataView.js",
-  "main": "./source/BetterDataView.js",
+  "files": ["source/*"],
+  "module": "source/BetterDataView.js",
+  "main": "source/BetterDataView.js",
   "name": "better-data-view",
   "version": "1.0.0",
   "author": "Joakim L. Christiansen / JLC / JoakimCh",
   "license": "GPL-3.0",
   "repository": {
     "type": "git",
-    "url": "https://github.com/JoakimCh/BetterDataView.js.git"
+    "url": "https://github.com/JoakimCh/better-data-view.git"
   },
   "description": "An extension of the standard DataView class. Its purpose is to be more comfortable to use as well as supporting much more advanced features for interacting with ArrayBuffers.",
-  "keywords": [""],
-  "files": ["source/*"]
+  "keywords": [""]
 }

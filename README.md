@@ -79,7 +79,7 @@ jpp(dataView.readObject(objTemplate))
 ```
 
 ## How to use
-Check the readme in the example directory!
+Check the readme in the [example directory](https://github.com/JoakimCh/better-data-view/tree/master/examples)!
 
 ## Object to/from ArrayBuffer
 

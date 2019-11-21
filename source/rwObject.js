@@ -3,8 +3,8 @@ import {BetterDataView_base} from "./base.js"
 import {replaceAll, jpp, assert} from "./misc.js"
 //todo: should remember start+end offset for written object, so it can be returned as a new DataView: b.lastObject() ?
 class BetterDataView_rwObject extends BetterDataView_base {
-  _evalSize(sizeString, object) {
-    return Function(`return ${sizeString}`).bind(object)() //'use strict'
+  _evalValue(valueString, object) { // usually used to get the array size based on a previous object key value
+    return Function(`return ${valueString}`).bind(object)() //'use strict'
   }
   _getType(typeString, object) {
     let typeFunction, type, size = [0,0]
@@ -12,7 +12,7 @@ class BetterDataView_rwObject extends BetterDataView_base {
     if (s[0][0] == 's') { // if type is a string
       type = 'string'
       if (s[0].indexOf(':') != -1) { // if string has a size specifier
-        size[0] = this._evalSize(s[0].split(':')[1], object)
+        size[0] = this._evalValue(s[0].split(':')[1], object)
       } else {
         size[0] = 0 // null terminated
       }
@@ -38,7 +38,7 @@ class BetterDataView_rwObject extends BetterDataView_base {
       type = 'array'
       size[1] = s.slice(1) //value = readArray(s.slice(1), ()=>readValue(this, typeFunction) )
       size[1].forEach((value,index) => {
-        size[1][index] = this._evalSize(value, object)
+        size[1][index] = this._evalValue(value, object)
       })
     }
     
@@ -83,10 +83,15 @@ class BetterDataView_rwObject extends BetterDataView_base {
           case 'null': break
         }
       } else if (Array.isArray(tValue)) {
-        let size = this._evalSize(tValue[0], object)
-        value = new Array(size)
-        for (let i=0; i<value.length; i++) {
-          value[i] = this.readObject(tValue[1])
+        if (tValue[0] == 'switch') {
+          const switchMap = new Map(tValue[2])
+          value = this.readObject(switchMap.get(this._evalValue(tValue[1], object)))
+        } else {
+          let size = this._evalValue(tValue[0], object)
+          value = new Array(size)
+          for (let i=0; i<value.length; i++) {
+            value[i] = this.readObject(tValue[1])
+          }
         }
       } else if (typeof tValue == 'object') {
         value = this.readObject(tValue)
@@ -165,7 +170,7 @@ class BetterDataView_rwObject extends BetterDataView_base {
       let tValue = templateArr[i][1]
       let oKey   = objectArr[i][0]
       let oValue = objectArr[i][1]
-      assert(tKey == oKey, "Template/object property name/order mismatch")
+      assert(tKey == oKey, "Template/object property name/order mismatch: "+tKey+" != "+oKey)
       if (typeof tValue == 'string') {
         let {typeFunction, type, size} = this._getType(tValue, object)
         switch (type) {
@@ -205,17 +210,28 @@ class BetterDataView_rwObject extends BetterDataView_base {
           case 'null': break
         }
       } else if (Array.isArray(tValue)) {
-        let size = this._evalSize(tValue[0], object)
-        assert(size == oValue.length, 
-          'Object-array size mismatch'
-          +`\nTemplate definition: ${tKey}: '${tValue}'`
-        )
-        /*oValue.forEach((value)=>{ // for (let value of array) { 
-          
-        })*/
-        for (let i=0; i<size; i++) {
-          assert_object(oValue[i], tKey, tValue[1])
-          this.writeObject(tValue[1], oValue[i])
+        if (tValue[0] == 'switch') {
+          const switchMap = new Map(tValue[2])
+          const switchQuery = this._evalValue(tValue[1], object)
+          const switchCase = switchMap.get(switchQuery)
+          assert(switchCase != undefined, 
+            "A switch case for '"+switchQuery+"' was not found"
+            +`\nTemplate definition: ${tKey}: '${tValue}'`
+          )
+          this.writeObject(switchCase, oValue)
+        } else {
+          let size = this._evalValue(tValue[0], object)
+          assert(size == oValue.length, 
+            'Object-array size mismatch'
+            +`\nTemplate definition: ${tKey}: '${tValue}'`
+          )
+          /*oValue.forEach((value)=>{ // for (let value of array) { 
+            
+          })*/
+          for (let i=0; i<size; i++) {
+            assert_object(oValue[i], tKey, tValue[1])
+            this.writeObject(tValue[1], oValue[i])
+          }
         }
       } else if (typeof tValue == 'object') {
         this.writeObject(tValue, oValue)

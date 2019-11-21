@@ -145,7 +145,7 @@ class BetterDataView_base extends DataView {
       let bytesToRead = length // let's start with this size
       let successiveErrors = 0
       // read until we got all UTF-8 chars
-      while ([...text].length < length && successiveErrors < 4) {
+      while ([...text].length < length && successiveErrors < 4) { //[...text].length will always count correct unicode characters 🙃
         try {
           //log(`Bytes to read: ${bytesToRead}`)
           if (bytesToRead <= this.buffer.byteLength) {

@@ -22,32 +22,52 @@ npm install joakimch/better-data-view
 import {BetterDataView} from 'better-data-view'
 const jpp = function(obj) {console.log(JSON.stringify(obj,null,2))}
 
-let objTemplate = {
-  value1: 'u8',  // unsigned 8-bit integer
-  value2: 'i8',  // signed 8-bit integer
+const objTemplate = { // can be converted to JSON
+  value1: 'u8', // unsigned 8-bit integer
+  value2: 'i8', // signed 8-bit integer
   value3: 'i32', // signed 32-bit integer
   value4: 'f64', // floating-point number with "double-precision"
-  date1: 'date', // date with millsecond precision stored as 64bit float
-  date2: 'unixtime', // date stored as 32bit unix time
+  date1: 'date',     // javascript date with millsecond precision stored as 53bit float
+  date2: 'unixtime', // javascript date stored as 32bit unix time
   string1: 's', // zero-terminated UTF-8 string
   string2: 's:5', // UTF-8 string with 5 characters (of variable byte length)
   subobject1: { // subobject
     value1: 'u16', // unsigned 16-bit integer
     value2: 'i16', // signed 16-bit integer
   },
-  array1: 's:2, this.value1, this.value2', // 2D array of 2-char strings with x and y dimension defined by numbers stored in value1 and value2
+  array1: 's:2, this.value1, this.value2', /* 2D array of 2-char strings with
+  x and y dimension defined by numbers stored in value1 and value2 */
   array2: ['2', { // array of subobjects (2 elements defined)
     value1: 'u8',
     string1: 's:this.value1', // string with character count defined in same subobject
   }],
   array3: 'u8,4',
+  type: 's',
+  // a detail object with fields depending on a previous value
+  detail: ['switch', 'this.type', [ // this is like a switch statement with different cases
+    ['human', {
+      name: 's',
+      gender: 's',
+      age: 'u8'
+    }],
+    ['cabinet', {
+      width: 'u8',
+      height: 'u8',
+      model: 's'
+    }],
+    ['cars', {
+      count: 'u8',
+      cars: 's, this.count'
+    }]
+  ]]
 }
 
-let obj = {
+const detailFor = 'cabinet'
+const obj = {
   value1: 2,
   value2: 2,
   value3: 2147483647,
-  value4: 9007199254740991, // javascript's "max safe integer" since it's stored internally as a 64-bit float
+  value4: 9007199254740991, // javascript's "max safe integer" since it's stored internally as a 53-bit float
   date1: new Date(),
   date2: new Date(),
   string1: "Hello World I ♥ Unicode 😃",
@@ -66,16 +86,37 @@ let obj = {
       string1: 'I ♥ Unicode',
     }
   ],
-  array3: Uint8Array.from([11,22,33,44])
+  array3: Uint8Array.from([11,22,33,44]),
+  type: detailFor,
+  detail: (() => {
+    switch (detailFor) {
+      case 'human':
+        return { 
+          name: 'Joe',
+          gender: 'male',
+          age: 86
+        }
+      case 'cabinet':
+        return {
+          width: 47,
+          height: 22,
+          model: 'lixhult'
+        }
+      case 'cars':
+        return {
+          count: 5,
+          cars: ['audi','bmw','lada','tesla','ford']
+        }
+    }
+  })()
 }
 
-let buffer = new ArrayBuffer(1024)
-let dataView = new BetterDataView(buffer)
+const buffer = new ArrayBuffer(1024)
+const b = new BetterDataView(buffer)
 
-dataView.writeObject(objTemplate, obj)
-dataView.seek(0)
-jpp(dataView.readObject(objTemplate))
-
+b.writeObject(objTemplate, obj) // write the object to our buffer
+b.start() // set the buffer position back to start
+jpp(b.readObject(objTemplate)) // then read the object from the buffer and print it
 ```
 
 ## How to use
